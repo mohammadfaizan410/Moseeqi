@@ -12,20 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moseeqi"
         tools:targetApi="31">
-
+        <activity
+            android:name=".RecentSongsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomePageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LikedSongsActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".auth.LoginActivity"
-            android:label="Login Activity" >
-        </activity>
-
+            android:label="Login Activity" />
     </application>
 
 </manifest>
