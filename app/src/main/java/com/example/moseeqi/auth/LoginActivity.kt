@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.ctis487.roomdatabasewithonetomanyrelation.db.UserRoomDatabase
 import com.ctis487.roomdatabasewithonetomanyrelation.db.User
-import com.ctis487.roomdatabasewithonetomanyrelation.db.UserWithPlaylists
 import com.example.moseeqi.HomePageActivity
 import com.example.moseeqi.MainActivity
 import com.example.moseeqi.constants.Constants
@@ -30,39 +29,41 @@ class LoginActivity : AppCompatActivity() {
                 .fallbackToDestructiveMigration()
                 .build()
         }
-        binding.btnRegister.setOnClickListener {
+        binding.btnNavRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent);
-
+            startActivity(intent)
         }
         binding.LoginBtn.setOnClickListener {
-            Toast.makeText(this,"this is the login vclick", Toast.LENGTH_LONG).show()
             if(binding.registerUsername.text.toString() == ""){
-                Toast.makeText(this, "", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Username cannot be empty", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }else if(binding.loginPass.text.toString() == ""){
-                binding.loginValidation.setText("Please enter a password");
+                Toast.makeText(this, "Password cannot be empty", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             else{
-
-                val allUsers: List<UserWithPlaylists> = userDB.userDao().getAllUsersWithPlaylists()
-                allUsers.forEach { usersWithPlaylists ->
-                    if(usersWithPlaylists.user.username == binding.registerUsername.text.toString() && usersWithPlaylists.user.password == binding.loginPass.text.toString()){
-                        sharedpreferences = getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
-                        val editor = sharedpreferences.edit();
-                        editor.putString(Constants.USERNAME_KEY, binding.registerUsername.text.toString());
-                        editor.apply();
-                        val intent = Intent(this, HomePageActivity::class.java)
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(this, "user was not found", Toast.LENGTH_LONG).show()
-                    }
+                val user: User? = userDB.userDao().getUserByUsername(binding.registerUsername.text.toString());
+                if(user == null) {
+                    Toast.makeText(this, "No User Was Found!", Toast.LENGTH_LONG).show()
                 }
+             else{
+                 val res:Boolean = user.password == binding.loginPass.text.toString()
+                    if(res == true){
+                        Toast.makeText(this, "Password Matched", Toast.LENGTH_SHORT).show()
+                   sharedpreferences = getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
+                   val editor = sharedpreferences.edit()
+                   editor.putString(Constants.USERNAME_KEY, user.username)
+                    editor.putLong(Constants.USERID_KEY, user.userId)
+                    editor.apply()
+                   val intent = Intent(this, HomePageActivity::class.java)
+                   startActivity(intent)
+                   }
+                    else{
+                        Toast.makeText(this, "Invalid Password!", Toast.LENGTH_LONG).show()
+                    }
+               }
 
             }
         }
-
-    // Assuming your layout file is named "login.xml"
     }
 }
