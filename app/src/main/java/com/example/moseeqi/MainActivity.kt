@@ -30,12 +30,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
 
-        if(sharedPreferences.getString(Constants.USERNAME_KEY,"") == ""){
+        if(sharedPreferences.getString(Constants.USERNAME_KEY,"none") == "none"){
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }else {
-           val intent = Intent(this, HomePageActivity::class.java);
-            startActivity(intent)
+            var allUsers = userDB.playListDao().getUsersWithPlaylists();
+            allUsers.forEach {
+                if(it.user.username ==  sharedPreferences.getString(Constants.USERNAME_KEY,"none")){
+                    println("user is already logged in");
+                }
+            }
         }
 
         binding.login.setOnClickListener {
