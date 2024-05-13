@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AF9BB6"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvTItle"
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:height="140dp"
+            android:fontFamily="serif"
+            android:paddingTop="50dp"
+            android:text="MOSEEQI"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#440D0F"
+            android:textColorHighlight="#651C1C"
+            android:textColorHint="#FFF3F3"
+            android:textColorLink="#EDE4E4"
+            android:textSize="60sp"
+            app:lineHeight="10dp" />
+
+        <Button
+            android:id="@+id/btnLikedSongs"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:background="#DFD8D8"
+            android:backgroundTint="#AF9BB6"
+            android:fontFamily="serif"
+            android:text="Liked Songs"
+            android:textColor="#603A40"
+            android:textSize="34sp"
+            app:icon="@android:drawable/btn_star_big_on"
+            app:iconPadding="20dp"
+            app:iconSize="50dp"
+            app:iconTint="#FFC107" />
+
+        <Button
+            android:id="@+id/btnRecentSongs"
+            android:layout_width="match_parent"
+            android:layout_height="196dp"
+            android:layout_marginTop="50dp"
+            android:background="#E4D5D5"
+            android:fontFamily="serif"
+            android:includeFontPadding="false"
+            android:text="Recent Songs"
+            android:textColor="#603A40"
+            android:textSize="34sp" />
+
+        <Button
+            android:id="@+id/logoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout" />
+
+    </LinearLayout>
+</layout>

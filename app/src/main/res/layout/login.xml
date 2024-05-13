@@ -70,12 +70,11 @@
         android:id="@+id/Login_Btn"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="228dp"
+        android:layout_marginBottom="38dp"
         android:text="Button"
         android:textColor="#F85624"
         app:layout_constraintBottom_toTopOf="@+id/login_validation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -84,11 +83,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="64dp"
         android:height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -107,21 +105,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <TextView
-        android:id="@+id/goToRegisterTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dont have an account?"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="671dp" />
-
-    <Button
-        android:id="@+id/goToRegisterBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register as User"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="700dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
