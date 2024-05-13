@@ -25,6 +25,14 @@
             android:name=".auth.LoginActivity"
             android:label="Login Activity" >
         </activity>
+        <activity
+            android:name=".auth.RegisterActivity"
+            android:label="Register Activity" >
+        </activity>
+        <activity
+            android:name=".HomePageActivity"
+            android:label="Homepage Activity" >
+        </activity>
 
     </application>
 
