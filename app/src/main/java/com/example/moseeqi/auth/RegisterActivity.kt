@@ -4,50 +4,57 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import androidx.room.util.newStringBuilder
 import com.ctis487.roomdatabasewithonetomanyrelation.db.Playlist
 import com.ctis487.roomdatabasewithonetomanyrelation.db.User
 import com.ctis487.roomdatabasewithonetomanyrelation.db.UserRoomDatabase
-import com.ctis487.roomdatabasewithonetomanyrelation.db.UserWithPlaylists
-import com.example.moseeqi.MainActivity
-import com.example.moseeqi.databinding.LoginBinding
 import com.example.moseeqi.databinding.RegisterBinding
 
-class RegisterActivity: AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var binding: RegisterBinding
+    private val userDB: UserRoomDatabase by lazy {
+        Room.databaseBuilder(this, UserRoomDatabase::class.java, "PlayListDB.db")
+            .allowMainThreadQueries()  // Note: It's generally not recommended to allow main thread queries in production apps
+            .fallbackToDestructiveMigration()
+            .build()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        lateinit var binding: RegisterBinding;
         super.onCreate(savedInstanceState)
-        binding = RegisterBinding.inflate(layoutInflater);
-        setContentView(binding.root);
-        val userDB: UserRoomDatabase by lazy {
-            Room.databaseBuilder(this, UserRoomDatabase::class.java, "PlayListDB.db")
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build()
-        }
+        binding = RegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.regitserBtn.setOnClickListener {
-            if(binding.registerUsername.text.toString() == ""){
-                binding.validationRegister.setText("please enter a username!");
+            val username = binding.registerUsername.text.toString()
+            val password = binding.registerPass.text.toString()
+
+            if (username.isEmpty()) {
+                binding.validationRegister.text = "Please enter a username!"
                 return@setOnClickListener
-            }else if(binding.registerPass.text.toString() == ""){
-                binding.validationRegister.setText("Please enter a password");
+            } else if (password.isEmpty()) {
+                binding.validationRegister.text = "Please enter a password!"
                 return@setOnClickListener
             }
-            else{
-                val allUsers: List<UserWithPlaylists> = userDB.playListDao().getUsersWithPlaylists()
-                allUsers.forEach { userWithPlaylists ->
-                    if(userWithPlaylists.user.username == binding.registerUsername.text.toString()){
-                       binding.validationRegister.setText("User already exists!!")
-                    }
-                }
-                binding.validationRegister.setText("");
-                val user:User = User(userId = 123, username = binding.registerUsername.text.toString(), password = binding.registerPass.text.toString());
-                val playList:Playlist = Playlist(playlistId = 123, userCreatorId = 123, playlistName = "recents");
-                val pl2: List<Playlist> = listOf(playList)
-                userDB.playListDao().insertUser(user);
-                userDB.playListDao().insertPlayList(pl2);
+
+            val existingUser = userDB.userDao().getUserByUsername(username)
+
+            if (existingUser != null) {
+                binding.validationRegister.text = "User already exists!!"
+                return@setOnClickListener
             }
+
+            // Creating a new user
+            val newUser = User(username = username, password = password)
+            userDB.userDao().insertUser(newUser)
+            val dbUser = userDB.userDao().getUserByUsername(username);
+            val playlistCount = userDB.playlistDao().getAllPlaylists().count() + 1
+            val playlist = Playlist(playlistCount.toLong(),"recents", dbUser!!.userId.toLong() )
+            val playlist1 = Playlist(playlistCount.toLong() + 1,"liked", dbUser!!.userId.toLong() )
+            userDB.playlistDao().insertPlaylist(playlist);
+            userDB.playlistDao().insertPlaylist(playlist1);
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
-        }
+    }
 }
